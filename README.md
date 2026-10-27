@@ -2,6 +2,10 @@
 
 Extensión Chrome Manifest V3 que sustituye la nueva pestaña por una cuadrícula visual y personalizable de accesos rápidos.
 
+## Vista previa
+
+![Interfaz de Ginger Dial](assets/screenshots/ginger-dial-interface.png)
+
 ## Funciones
 
 - Organiza accesos rápidos por grupos.
@@ -22,6 +26,13 @@ La extensión solicita `storage` para persistir sus datos, `bookmarks` para most
 ## Fondos y temas
 
 La pantalla de personalización incluye seis fondos predefinidos originales, tema claro/oscuro/sistema, intensidad regulable y carga de imágenes PNG, JPEG o WebP desde el ordenador. Las imágenes se limitan a 25 MB de entrada y se reducen a un máximo de 2560×1440 antes de guardarse.
+
+## Compatibilidad recomendada
+
+- **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3 y la API de favicons de Chrome.
+- **Firefox 128 o posterior.** La compatibilidad con Firefox, incluida la solicitud de permisos de host opcionales para iconos por URL, está disponible en la rama [`codex/firefox-support`](https://github.com/reddevman/ginger-dial/tree/codex/firefox-support).
+
+Estas son versiones recomendadas, no límites forzados en el manifiesto de Chrome.
 
 ## Probar en Chrome
 

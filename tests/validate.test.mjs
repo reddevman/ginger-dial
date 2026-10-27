@@ -161,3 +161,12 @@ test("all manifest entry points exist", async () => {
   const files = ["newtab.html", "app.js", "styles.css", "service-worker.js"];
   await Promise.all(files.map(async (file) => assert.ok((await readFile(new URL(file, root))).length > 0)));
 });
+
+test("README documents the preview and recommended browser versions", async () => {
+  const readme = await readFile(new URL("README.md", root), "utf8");
+
+  assert.match(readme, /assets\/screenshots\/ginger-dial-interface\.png/);
+  assert.match(readme, /Google Chrome 120 o posterior/);
+  assert.match(readme, /Firefox 128 o posterior/);
+  assert.match(readme, /codex\/firefox-support/);
+});
