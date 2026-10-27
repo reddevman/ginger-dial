@@ -192,4 +192,7 @@ test("documentation describes the generated browser packages and local-only beha
   assert.match(readme, /Cargar complemento temporal/);
   assert.match(readme, /Firefox la elimina al reiniciarse/);
   assert.match(readme, /\.xpi/);
+  assert.match(readme, /assets\/screenshots\/ginger-dial-firefox\.png/);
+  assert.match(readme, /Google Chrome 120 o posterior/);
+  assert.match(readme, /Firefox 128 o posterior/);
 });

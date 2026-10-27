@@ -2,6 +2,10 @@
 
 Extensión Manifest V3 para Chrome y Firefox que sustituye la nueva pestaña por una cuadrícula de accesos rápidos. Es una implementación original inspirada en el comportamiento público de las extensiones _speed dial_.
 
+## Vista previa
+
+![Ginger Dial en Firefox](assets/screenshots/ginger-dial-firefox.png)
+
 ## Privacidad
 
 - Los grupos, accesos y preferencias se guardan exclusivamente en `storage.local` del navegador.
@@ -12,6 +16,13 @@ Extensión Manifest V3 para Chrome y Firefox que sustituye la nueva pestaña por
 ## Fondos y temas
 
 La pantalla de personalización incluye seis fondos predefinidos originales, tema claro/oscuro/sistema, intensidad regulable y carga de imágenes PNG, JPEG o WebP desde el ordenador. Las imágenes se limitan a 25 MB de entrada y se reducen a un máximo de 2560×1440 antes de guardarse.
+
+## Compatibilidad recomendada
+
+- **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3 y la API de favicons de Chrome.
+- **Firefox 128 o posterior.** La versión para Firefox utiliza Manifest V3 y `optional_host_permissions` para solicitar acceso a una URL de icono solo cuando la persona usuaria lo pide.
+
+Estas son versiones recomendadas, no límites forzados en los manifiestos. En Firefox, los diales sin icono personalizado muestran la inicial del sitio porque el navegador no expone la API de favicons de Chrome.
 
 ## Crear los paquetes
 
