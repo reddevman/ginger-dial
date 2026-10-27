@@ -186,6 +186,8 @@ test("documentation describes the generated browser packages and local-only beha
 
   assert.match(readme, /`chrome\//);
   assert.match(readme, /`firefox\//);
+  assert.match(readme, /raíz del repositorio clonado/);
+  assert.match(readme, /ginger-dial\//);
   assert.match(readme, /permiso opcional/);
   assert.doesNotMatch(readme, /ni permisos de host/);
   assert.match(readme, /iconos y fondos versionados se incluyen/);

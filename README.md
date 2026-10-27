@@ -46,6 +46,16 @@ El comando genera dos carpetas autocontenidas y locales:
 - `chrome/` para Chrome.
 - `firefox/` para Firefox.
 
+Se crean en la **raíz del repositorio clonado**, no dentro de `shared/` ni de `platforms/`:
+
+```text
+ginger-dial/
+├── chrome/
+├── firefox/
+├── shared/
+└── platforms/
+```
+
 Estas carpetas se regeneran y no se versionan. Las fuentes compartidas están en `shared/` y los manifiestos específicos en `platforms/`.
 Los iconos y fondos versionados se incluyen al generar los paquetes. Si no están disponibles, el build crea un icono de reserva reproducible; no se versiona material de firma privado.
 
