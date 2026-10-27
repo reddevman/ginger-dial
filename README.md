@@ -30,7 +30,6 @@ La pantalla de personalización incluye seis fondos predefinidos originales, tem
 ## Compatibilidad recomendada
 
 - **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3 y la API de favicons de Chrome.
-- **Firefox 128 o posterior.** La compatibilidad con Firefox, incluida la solicitud de permisos de host opcionales para iconos por URL, está disponible en la rama [`codex/firefox-support`](https://github.com/reddevman/ginger-dial/tree/codex/firefox-support).
 
 Estas son versiones recomendadas, no límites forzados en el manifiesto de Chrome.
 
