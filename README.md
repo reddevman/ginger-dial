@@ -6,6 +6,17 @@ Extensión Manifest V3 para Chrome y Firefox que sustituye la nueva pestaña por
 
 ![Ginger Dial en Firefox](assets/screenshots/ginger-dial-firefox.png)
 
+La captura corresponde a Firefox. Chrome y Firefox comparten la misma interfaz, grupos, accesos, fondos e iconos personalizados; Chrome muestra además los favicons nativos de los sitios.
+
+## Paquetes incluidos en esta rama
+
+| Navegador | Paquete generado | Iconos de sitios |
+| --- | --- | --- |
+| Chrome | `chrome/` | Favicons nativos de Chrome. |
+| Firefox | `firefox/` | Inicial del sitio o icono personalizado. |
+
+Ambos paquetes se generan desde las mismas fuentes de `shared/` y se validan juntos con `npm test`.
+
 ## Privacidad
 
 - Los grupos, accesos y preferencias se guardan exclusivamente en `storage.local` del navegador.

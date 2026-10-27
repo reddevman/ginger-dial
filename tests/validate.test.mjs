@@ -193,6 +193,9 @@ test("documentation describes the generated browser packages and local-only beha
   assert.match(readme, /Firefox la elimina al reiniciarse/);
   assert.match(readme, /\.xpi/);
   assert.match(readme, /assets\/screenshots\/ginger-dial-firefox\.png/);
+  assert.match(readme, /Paquetes incluidos en esta rama/);
+  assert.match(readme, /\| Chrome \| `chrome\/` \|/);
+  assert.match(readme, /\| Firefox \| `firefox\/` \|/);
   assert.match(readme, /Google Chrome 120 o posterior/);
   assert.match(readme, /Firefox 128 o posterior/);
 });
