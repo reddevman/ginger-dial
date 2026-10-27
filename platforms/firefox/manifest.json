@@ -3,19 +3,13 @@
   "name": "Ginger Dial",
   "version": "1.0.0",
   "description": "Una nueva pestaña visual, rápida y privada. Todos los datos permanecen en este navegador.",
-  "permissions": [
-    "storage",
-    "bookmarks",
-    "favicon"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["storage", "bookmarks"],
+  "optional_host_permissions": ["<all_urls>"],
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
   "background": {
-    "service_worker": "service-worker.js"
+    "scripts": ["background.js"]
   },
   "action": {
     "default_title": "Abrir Ginger Dial"
@@ -26,7 +20,12 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ginger-dial@amarqara.local",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   }
 }
