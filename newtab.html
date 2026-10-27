@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Ginger Dial</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Ginger Dial, inicio">
+        <img src="icons/icon-48.png" alt="" />
+        <span>Ginger Dial</span>
+      </a>
+
+      <label class="search-shell" for="search-input">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg>
+        <input id="search-input" type="search" autocomplete="off" placeholder="Buscar accesos rápidos…  /" />
+        <kbd>/</kbd>
+      </label>
+
+      <nav class="top-actions" aria-label="Herramientas">
+        <button class="icon-button" id="bookmarks-button" type="button" aria-label="Marcadores" title="Marcadores">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.8L6 21V4.8Z" /></svg>
+        </button>
+        <button class="icon-button" id="settings-button" type="button" aria-label="Personalización" title="Personalización">
+          <svg class="settings-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-4v-.08A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.03H3v-4h.08A1.7 1.7 0 0 0 4.6 8.96a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 8.96 4.6 1.7 1.7 0 0 0 10 3.04V3h4v.08a1.7 1.7 0 0 0 1.03 1.52 1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06a1.7 1.7 0 0 0-.34 1.88A1.7 1.7 0 0 0 20.96 10H21v4h-.08A1.7 1.7 0 0 0 19.4 15Z" />
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <main class="workspace">
+      <section class="welcome" aria-labelledby="welcome-title">
+        <p id="today" class="eyebrow"></p>
+        <h1 id="welcome-title">Tus sitios, a un clic.</h1>
+        <p>Organizados aquí y guardados únicamente en este navegador.</p>
+      </section>
+
+      <div class="group-bar">
+        <div id="group-tabs" class="group-tabs" role="tablist" aria-label="Grupos"></div>
+        <button id="add-group-button" class="add-group" type="button" aria-label="Crear grupo">＋</button>
+        <button id="manage-group-button" class="add-group manage-group" type="button" aria-label="Editar grupo">
+          <span class="ellipsis-icon" aria-hidden="true"></span>
+        </button>
+        <label class="dial-order" for="dial-order-select">Ordenar
+          <select id="dial-order-select">
+            <option value="manual">Manual</option>
+            <option value="title">Nombre</option>
+            <option value="domain">Dominio</option>
+          </select>
+        </label>
+      </div>
+
+      <section id="dial-grid" class="dial-grid" aria-live="polite"></section>
+      <p id="empty-state" class="empty-state" hidden>No hay resultados en este grupo.</p>
+    </main>
+
+    <aside id="side-panel" class="side-panel" aria-hidden="true" aria-labelledby="panel-title" inert>
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Tu navegador</p>
+          <h2 id="panel-title">Marcadores</h2>
+        </div>
+        <button class="icon-button" id="close-panel" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <label class="panel-search" for="panel-search-input">
+        <span aria-hidden="true">⌕</span>
+        <input id="panel-search-input" type="search" placeholder="Filtrar…" />
+      </label>
+      <div id="panel-content" class="panel-content"></div>
+    </aside>
+    <button id="panel-scrim" class="scrim" type="button" aria-label="Cerrar panel" hidden></button>
+
+    <dialog id="dial-dialog">
+      <form id="dial-form" method="dialog" class="dialog-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Acceso rápido</p>
+            <h2 id="dial-dialog-title">Añadir sitio</h2>
+          </div>
+          <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+        </div>
+        <input id="dial-id" type="hidden" />
+        <label>Nombre<input id="dial-title" required maxlength="48" placeholder="Por ejemplo, GitHub" /></label>
+        <label>Dirección web<input id="dial-url" required inputmode="url" placeholder="https://ejemplo.com" /></label>
+        <label>Color
+          <select id="dial-color">
+            <option value="indigo">Índigo</option>
+            <option value="teal">Turquesa</option>
+            <option value="coral">Coral</option>
+            <option value="amber">Ámbar</option>
+            <option value="slate">Pizarra</option>
+          </select>
+        </label>
+        <label>Icono
+          <select id="dial-icon-mode">
+            <option value="favicon">Favicon del sitio</option>
+            <option value="custom">Imagen personalizada</option>
+          </select>
+        </label>
+        <div id="dial-icon-custom-controls" class="dial-icon-custom-controls" hidden>
+          <div class="dial-icon-preview"><img id="dial-icon-preview" alt="Vista previa del icono" hidden /></div>
+          <div class="dial-icon-actions">
+            <button class="button ghost" id="dial-icon-upload-button" type="button">Elegir imagen</button>
+            <button class="button ghost" id="dial-icon-remove-button" type="button" hidden>Usar favicon</button>
+          </div>
+          <div class="dial-icon-url">
+            <input id="dial-icon-url" type="url" inputmode="url" placeholder="https://ejemplo.com/icono.png" aria-label="URL de imagen" />
+            <button class="button ghost" id="dial-icon-url-button" type="button">Usar URL</button>
+          </div>
+          <span id="dial-icon-status" role="status"></span>
+        </div>
+        <input id="dial-icon-file" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+        <div class="dialog-actions">
+          <button class="button danger" id="delete-dial-button" type="button">Eliminar</button>
+          <button class="button ghost" type="button" data-close-dialog>Cancelar</button>
+          <button class="button primary" id="save-dial-button" type="submit">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="group-dialog">
+      <form id="group-form" method="dialog" class="dialog-form compact">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">Organización</p><h2 id="group-dialog-title">Nuevo grupo</h2></div>
+          <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+        </div>
+        <input id="group-id" type="hidden" />
+        <label>Nombre<input id="group-name" required maxlength="28" placeholder="Por ejemplo, Lecturas" /></label>
+        <div class="dialog-actions">
+          <button class="button danger" id="delete-group-button" type="button">Eliminar</button>
+          <button class="button ghost" type="button" data-close-dialog>Cancelar</button>
+          <button class="button primary" id="save-group-button" type="submit">Crear grupo</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="settings-dialog">
+      <form id="settings-form" method="dialog" class="dialog-form settings-form">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">Apariencia y datos</p><h2>Personalización</h2></div>
+          <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+        </div>
+        <label class="theme-field">Tema
+          <select id="theme-select">
+            <option value="system">Usar el del sistema</option>
+            <option value="dark">Oscuro</option>
+            <option value="light">Claro</option>
+          </select>
+        </label>
+        <fieldset class="background-fieldset">
+          <legend>Fondo</legend>
+          <div class="background-grid">
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="midnight" />
+              <span class="background-swatch swatch-midnight"></span><span>Noche</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="aurora" />
+              <span class="background-swatch swatch-aurora"></span><span>Aurora</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="ember" />
+              <span class="background-swatch swatch-ember"></span><span>Brasa</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="ocean" />
+              <span class="background-swatch swatch-ocean"></span><span>Océano</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="meadow" />
+              <span class="background-swatch swatch-meadow"></span><span>Bosque</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="lake-dawn" />
+              <span class="background-swatch swatch-lake-dawn"></span><span>Lago</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="quiet-forest" />
+              <span class="background-swatch swatch-quiet-forest"></span><span>Arboleda</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="sunrise-coast" />
+              <span class="background-swatch swatch-sunrise-coast"></span><span>Costa</span>
+            </label>
+            <label class="background-choice">
+              <input type="radio" name="background-preset" value="plain" />
+              <span class="background-swatch swatch-plain"></span><span>Liso</span>
+            </label>
+            <label class="background-choice custom-choice" id="custom-background-choice">
+              <input type="radio" name="background-preset" value="custom" />
+              <span class="background-swatch" id="custom-background-swatch"></span><span>Mi imagen</span>
+            </label>
+          </div>
+          <div class="background-upload-row">
+            <button class="button ghost" id="background-upload-button" type="button">Elegir imagen</button>
+            <button class="button ghost" id="background-remove-button" type="button">Quitar imagen</button>
+            <input id="background-file" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+            <span id="background-status" role="status"></span>
+          </div>
+        </fieldset>
+        <label>Oscurecer fondo
+          <input id="background-shade" type="range" min="0" max="70" step="1" />
+          <output id="background-shade-output"></output>
+        </label>
+        <label>Columnas
+          <input id="columns-range" type="range" min="3" max="6" step="1" />
+          <output id="columns-output"></output>
+        </label>
+        <label class="toggle-row"><span>Mostrar direcciones</span><input id="show-urls" type="checkbox" /></label>
+        <div class="local-note">
+          <strong>Solo local</strong>
+          <span>Ginger Dial no tiene cuentas, telemetría ni sincronización en la nube.</span>
+        </div>
+        <div class="backup-actions">
+          <button class="button ghost" id="export-button" type="button">Exportar copia</button>
+          <button class="button ghost" id="import-button" type="button">Importar copia o Speed Dial 2</button>
+          <input id="import-file" type="file" accept="application/json" hidden />
+        </div>
+        <div class="dialog-actions"><button class="button primary" type="submit">Guardar cambios</button></div>
+      </form>
+    </dialog>
+
+    <template id="dial-template">
+      <article class="dial-card" draggable="true">
+        <a class="dial-link">
+          <span class="dial-visual"><img class="dial-favicon" alt="" /><span class="dial-letter"></span></span>
+          <span class="dial-copy"><strong class="dial-title"></strong><small class="dial-url"></small></span>
+        </a>
+        <button class="dial-menu" type="button" aria-label="Editar acceso rápido">•••</button>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
