@@ -1,27 +1,37 @@
 # Ginger Dial
 
-Extensión Chrome Manifest V3 que sustituye la nueva pestaña por una cuadrícula visual y personalizable de accesos rápidos.
+Extensión Manifest V3 para Chrome y Firefox que sustituye la nueva pestaña por una cuadrícula de accesos rápidos. Es una implementación original inspirada en el comportamiento público de las extensiones _speed dial_.
 
 ## Vista previa
 
 ![Interfaz de Ginger Dial](assets/screenshots/ginger-dial-interface.png)
 
+La captura corresponde a Firefox. Chrome y Firefox comparten la misma interfaz, grupos, accesos, fondos e iconos personalizados; Chrome muestra además los favicons nativos de los sitios.
+
 ## Funciones
 
 - Organiza accesos rápidos por grupos.
 - Busca, reordena, crea, edita y elimina accesos.
-- Consulta los marcadores de Chrome desde el panel lateral.
+- Consulta los marcadores del navegador desde el panel lateral.
 - Elige tema claro, oscuro o del sistema, además de fondos incluidos o propios.
 - Importa y exporta grupos, accesos y preferencias mediante un JSON local.
 
+## Paquetes generados
+
+| Navegador | Paquete generado | Iconos de sitios |
+| --- | --- | --- |
+| Chrome | `chrome/` | Favicons nativos de Chrome. |
+| Firefox | `firefox/` | Inicial del sitio o icono personalizado. |
+
+Ambos paquetes se generan desde las mismas fuentes de `shared/` y se validan juntos con `npm test`.
+
 ## Privacidad
 
-- Los grupos, accesos y preferencias se guardan exclusivamente en `chrome.storage.local`.
+- Los grupos, accesos y preferencias se guardan exclusivamente en `storage.local` del navegador.
 - Los fondos personalizados se optimizan a WebP y se guardan en el mismo almacenamiento local.
-- No hay cuenta, telemetría, sincronización ni API remota.
+- No hay cuenta, telemetría, sincronización ni API remota. Chrome y Firefox solicitan un permiso opcional para el dominio elegido solo si usas una URL de icono personalizada.
+- Las descargas de iconos remotos se limitan a 5 MB y se cancelan después de 15 segundos.
 - La exportación e importación se hace mediante un archivo JSON local iniciado por el usuario.
-
-La extensión solicita `storage` para persistir sus datos, `bookmarks` para mostrar el árbol de marcadores, `favicon` para mostrar iconos de sitios y acceso de host para cargar favicons e iconos personalizados elegidos por el usuario.
 
 ## Fondos y temas
 
@@ -29,16 +39,52 @@ La pantalla de personalización incluye seis fondos predefinidos originales, tem
 
 ## Compatibilidad recomendada
 
-- **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3 y la API de favicons de Chrome.
+- **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3, la API de favicons de Chrome y permisos de host opcionales para descargar iconos personalizados.
+- **Firefox 128 o posterior.** La versión para Firefox utiliza Manifest V3 y `optional_host_permissions` para solicitar acceso a una URL de icono solo cuando la persona usuaria lo pide.
 
-Estas son versiones recomendadas, no límites forzados en el manifiesto de Chrome.
+Estas son versiones recomendadas, no límites forzados en los manifiestos. En Firefox, los diales sin icono personalizado muestran la inicial del sitio porque el navegador no expone la API de favicons de Chrome.
+
+## Crear los paquetes
+
+```bash
+npm run build
+```
+
+El comando genera dos carpetas autocontenidas y locales:
+
+- `chrome/` para Chrome.
+- `firefox/` para Firefox.
+
+Se crean en la **raíz del repositorio clonado**, no dentro de `shared/` ni de `platforms/`:
+
+```text
+ginger-dial/
+├── chrome/
+├── firefox/
+├── shared/
+└── platforms/
+```
+
+Estas carpetas se regeneran y no se versionan. Las fuentes compartidas están en `shared/` y los manifiestos específicos en `platforms/`.
+Los iconos y fondos versionados se incluyen al generar los paquetes. Si no están disponibles, el build crea un icono de reserva reproducible; no se versiona material de firma privado.
+
+Para compartir la extensión, entrega únicamente la carpeta generada del navegador correspondiente. No compartas el directorio de trabajo completo ni claves privadas de firma.
 
 ## Probar en Chrome
 
 1. Abre `chrome://extensions`.
 2. Activa **Modo de desarrollador**.
-3. Pulsa **Cargar descomprimida** y selecciona la carpeta raíz del repositorio clonado.
+3. Pulsa **Cargar descomprimida** y selecciona la carpeta `chrome/` generada.
 4. Abre una pestaña nueva.
+
+## Probar en Firefox
+
+1. Abre `about:debugging#/runtime/this-firefox`.
+2. Pulsa **Cargar complemento temporal**.
+3. Selecciona `firefox/manifest.json` dentro de la carpeta generada. Aunque Firefox admite cualquier archivo del paquete, el manifiesto identifica claramente la extensión.
+4. Abre una pestaña nueva y prueba los marcadores, la importación y un icono personalizado por URL.
+
+La carpeta `firefox/` contiene el manifiesto, los scripts, la interfaz, los iconos y los fondos: se debe conservar completa. Esta instalación es temporal y Firefox la elimina al reiniciarse. Para distribuirla o instalarla de forma permanente, hay que empaquetar los contenidos como un archivo `.xpi` y obtener la firma de Mozilla, normalmente mediante [AMO](https://addons.mozilla.org/developers/).
 
 ## Validación
 

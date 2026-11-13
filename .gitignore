@@ -1,5 +1,11 @@
 node_modules/
 graphify-out/
+/.cache/
+/.turbo/
+/dist/
+/skills/
+/chrome/
+/firefox/
 *.crx
 *.pem
 *.zip

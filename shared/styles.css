@@ -48,13 +48,13 @@
 		radial-gradient(circle at 88% 86%, #8a6b38 0, transparent 40%), linear-gradient(145deg, #13221d, #191d18);
 }
 :root[data-background="lake-dawn"] {
-	--wallpaper: url("backgrounds/lake-dawn.jpg");
+	--wallpaper: linear-gradient(rgb(35 56 75 / 28%), rgb(188 121 103 / 28%)), url("backgrounds/lake-dawn.jpg");
 }
 :root[data-background="quiet-forest"] {
-	--wallpaper: url("backgrounds/quiet-forest.jpg");
+	--wallpaper: linear-gradient(rgb(20 45 41 / 32%), rgb(99 131 79 / 32%)), url("backgrounds/quiet-forest.jpg");
 }
 :root[data-background="sunrise-coast"] {
-	--wallpaper: url("backgrounds/sunrise-coast.jpg");
+	--wallpaper: linear-gradient(rgb(113 78 115 / 20%), rgb(42 108 130 / 20%)), url("backgrounds/sunrise-coast.jpg");
 }
 :root[data-background="plain"] {
 	--wallpaper: linear-gradient(145deg, #171925, #10121a);
