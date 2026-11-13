@@ -15,6 +15,7 @@ const MAX_BACKGROUND_FILE_BYTES = 25 * 1024 * 1024;
 const MAX_BACKGROUND_DATA_LENGTH = 8 * 1024 * 1024;
 const MAX_DIAL_ICON_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_DIAL_ICON_DATA_LENGTH = 128 * 1024;
+const DIAL_ICON_DOWNLOAD_TIMEOUT_MS = 15_000;
 const extensionApi = globalThis.browser ?? globalThis.chrome;
 const platform = globalThis.GingerDialPlatform ?? {
   nativeFavicons: false,
@@ -887,6 +888,57 @@ async function selectDialIconFile(file) {
   }
 }
 
+async function downloadDialIcon(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    DIAL_ICON_DOWNLOAD_TIMEOUT_MS,
+  );
+  try {
+    const response = await fetch(url.href, { signal: controller.signal });
+    if (!response.ok)
+      throw new Error(`No se pudo descargar la imagen (${response.status}).`);
+
+    const contentLengthHeader = response.headers.get("content-length");
+    const contentLength = Number(contentLengthHeader);
+    if (
+      contentLengthHeader !== null &&
+      Number.isFinite(contentLength) &&
+      contentLength > MAX_DIAL_ICON_FILE_BYTES
+    )
+      throw new Error("La imagen supera el límite de 5 MB.");
+    if (!response.body)
+      throw new Error("El navegador no permite limitar esta descarga.");
+
+    const reader = response.body.getReader();
+    const chunks = [];
+    let receivedBytes = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      receivedBytes += value.byteLength;
+      if (receivedBytes > MAX_DIAL_ICON_FILE_BYTES) {
+        await reader.cancel();
+        throw new Error("La imagen supera el límite de 5 MB.");
+      }
+      chunks.push(value);
+    }
+    const contentType =
+      response.headers
+        .get("content-type")
+        ?.split(";", 1)[0]
+        .trim()
+        .toLowerCase() ?? "";
+    return new Blob(chunks, { type: contentType });
+  } catch (error) {
+    if (error.name === "AbortError")
+      throw new Error("La descarga de la imagen tardó demasiado.");
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function selectDialIconUrl() {
   const input = document.querySelector("#dial-icon-url");
   try {
@@ -896,10 +948,7 @@ async function selectDialIconUrl() {
         "Necesitas conceder permiso para descargar la imagen de ese sitio.",
       );
     updateDialIconControls("Descargando imagen…");
-    const response = await fetch(url.href);
-    if (!response.ok)
-      throw new Error(`No se pudo descargar la imagen (${response.status}).`);
-    pendingDialIcon = await optimizeDialIcon(await response.blob());
+    pendingDialIcon = await optimizeDialIcon(await downloadDialIcon(url));
     input.value = "";
     updateDialIconControls();
   } catch (error) {

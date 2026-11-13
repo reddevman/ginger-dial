@@ -76,7 +76,11 @@ test("browser manifests preserve only their compatible background and permission
   assert.equal(chrome.manifest_version, 3);
   assert.equal(chrome.background.service_worker, "background.js");
   assert.ok(chrome.permissions.includes("favicon"));
-  assert.deepEqual(chrome.host_permissions, ["<all_urls>"]);
+  assert.equal(chrome.host_permissions, undefined);
+  assert.deepEqual(chrome.optional_host_permissions, [
+    "http://*/*",
+    "https://*/*",
+  ]);
   assert.match(chrome.key, /^MIIB/);
   assert.equal(
     chromeExtensionId(chrome.key),
@@ -110,7 +114,7 @@ test("build emits valid PNG manifest icons without versioning output binaries", 
   }
 });
 
-test("shared application remains local and gates Firefox URL-icon downloads behind a permission", async () => {
+test("shared application gates URL-icon downloads and enforces resource limits", async () => {
   const source = await readPackageFile(sharedRoot, "app.js");
 
   assert.match(
@@ -121,7 +125,12 @@ test("shared application remains local and gates Firefox URL-icon downloads behi
   assert.doesNotMatch(source, /storage\.sync/);
   assert.match(source, /async function hasIconHostPermission/);
   assert.match(source, /extensionApi\.permissions\.request\(permission\)/);
-  assert.match(source, /const response = await fetch\(url\.href\)/);
+  assert.match(source, /async function downloadDialIcon/);
+  assert.match(source, /fetch\(url\.href, \{ signal: controller\.signal \}\)/);
+  assert.match(source, /response\.body\.getReader\(\)/);
+  assert.match(source, /receivedBytes > MAX_DIAL_ICON_FILE_BYTES/);
+  assert.match(source, /DIAL_ICON_DOWNLOAD_TIMEOUT_MS/);
+  assert.doesNotMatch(source, /response\.blob\(\)/);
   assert.doesNotMatch(source, /XMLHttpRequest|WebSocket/);
 });
 
@@ -133,6 +142,7 @@ test("platform configuration keeps Chrome favicons and gives Firefox a local fal
   ]);
 
   assert.match(chromePlatform, /nativeFavicons: true/);
+  assert.match(chromePlatform, /optionalIconHostPermission: true/);
   assert.match(firefoxPlatform, /nativeFavicons: false/);
   assert.match(firefoxPlatform, /optionalIconHostPermission: true/);
   assert.match(source, /platform\.nativeFavicons/);

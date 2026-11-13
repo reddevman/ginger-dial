@@ -21,7 +21,7 @@ Ambos paquetes se generan desde las mismas fuentes de `shared/` y se validan jun
 
 - Los grupos, accesos y preferencias se guardan exclusivamente en `storage.local` del navegador.
 - Los fondos personalizados se optimizan a WebP y se guardan en el mismo almacenamiento local.
-- No hay cuenta, telemetría, sincronización ni API remota. Firefox solicita un permiso opcional para el dominio elegido solo si usas una URL de icono personalizada.
+- No hay cuenta, telemetría, sincronización ni API remota. Chrome y Firefox solicitan un permiso opcional para el dominio elegido solo si usas una URL de icono personalizada.
 - La exportación e importación se hace mediante un archivo JSON local iniciado por el usuario.
 
 ## Fondos y temas
@@ -30,7 +30,7 @@ La pantalla de personalización incluye seis fondos predefinidos originales, tem
 
 ## Compatibilidad recomendada
 
-- **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3 y la API de favicons de Chrome.
+- **Google Chrome 120 o posterior.** La extensión utiliza Manifest V3, la API de favicons de Chrome y permisos de host opcionales para descargar iconos personalizados.
 - **Firefox 128 o posterior.** La versión para Firefox utiliza Manifest V3 y `optional_host_permissions` para solicitar acceso a una URL de icono solo cuando la persona usuaria lo pide.
 
 Estas son versiones recomendadas, no límites forzados en los manifiestos. En Firefox, los diales sin icono personalizado muestran la inicial del sitio porque el navegador no expone la API de favicons de Chrome.

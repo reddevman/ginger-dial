@@ -1,4 +1,4 @@
 globalThis.GingerDialPlatform = {
   nativeFavicons: true,
-  optionalIconHostPermission: false,
+  optionalIconHostPermission: true,
 };
